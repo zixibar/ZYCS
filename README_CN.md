@@ -22,6 +22,18 @@
 
 ## 如何部署
 
+**一键部署**
+
+Vercel 自动部署
+
+[![骤雨重山图床](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/uxiaohan/ZYCS-IMG)
+
+Cloudflare Pages 自动部署
+
+[![骤雨重山图床](https://deploy.workers.cloudflare.com/button)](https://dash.cloudflare.com/?to=/:account/workers-and-pages/create/deploy-to-workers&repository=https://github.com/uxiaohan/ZYCS-IMG)
+
+**手动部署**
+
 - 1、准备一个 Cloudflare 账户
 - 2、Fork 本仓库，自由修改`App.vue`和`index.html`文件中的文案
 - 3、登录`Cloudflare Dashboard`打开`Workers 和 Pages`创建`Pages`

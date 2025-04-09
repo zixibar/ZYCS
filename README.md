@@ -22,6 +22,18 @@ English | [简体中文](https://github.com/uxiaohan/ZYCS-IMG/blob/main/README_C
 
 ## How to deploy
 
+**One-click deployment**
+
+Vercel Automated Deployment
+
+[![骤雨重山图床](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/uxiaohan/ZYCS-IMG)
+
+Cloudflare Pages automatic deployment
+
+[![骤雨重山图床](https://deploy.workers.cloudflare.com/button)](https://dash.cloudflare.com/?to=/:account/workers-and-pages/create/deploy-to-workers&repository=https://github.com/uxiaohan/ZYCS-IMG)
+
+**Manual Deployment**
+
 - 1. Prepare a Cloudflare account
 - 2. Fork this repository and freely modify the text in the `App.vue` and `index.html` files
 - 3. Log in to `Cloudflare Dashboard`, open `Workers and Pages`, and create `Pages`
