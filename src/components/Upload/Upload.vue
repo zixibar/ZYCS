@@ -25,7 +25,7 @@ const props = defineProps(['modelValue', 'UploadConfig', 'uploadAPI']);
 const emits = defineEmits(['update:modelValue']);
 const UploadConfig = ref<any>(props.UploadConfig);
 // 文件上传列表变化事件
-const fileListChange = (v: Event, type: boolean = false) => {
+const fileListChange = async (v: Event, type: boolean = false) => {
   let targetFileListArr: any = [];
   if (!type) {
     if (!v.target) return;
@@ -33,6 +33,8 @@ const fileListChange = (v: Event, type: boolean = false) => {
   } else {
     targetFileListArr = v;
   }
+  // 处理图片格式
+  targetFileListArr = await imgTypeFormat(targetFileListArr);
   const FileListArr: Array<any> = [...props.modelValue, ...Array.from(targetFileListArr || [])];
   // 过滤不符合Size的文件
   let fileListFilter = FileListArr.filter((i: any) => UploadConfig.value.MaxSize && (i.size <= UploadConfig.value.MaxSize * 1024 * 1024 || i.upload_status == 'success'));
@@ -44,6 +46,35 @@ const fileListChange = (v: Event, type: boolean = false) => {
   }
   emits('update:modelValue', fileListFilter);
   fileUpload(fileListFilter);
+};
+
+// 图片格式webp 转换为png
+const imgTypeFormat = async (files: File[]) => {
+  const _fileList = Array.from(files || []);
+  const convertWebPToPNG = async (file: File): Promise<File> => {
+    if (!file.type.startsWith('image/webp')) return file;
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d')!;
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob((blob) => {
+          const newFile = new File([blob!], file.name.replace(/\.webp$/i, '.png'), { type: 'image/png' });
+          URL.revokeObjectURL(img.src);
+          resolve(newFile);
+        }, 'image/png');
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(img.src);
+        resolve(file);
+      };
+    });
+  };
+  return await Promise.all(_fileList.map(convertWebPToPNG));
 };
 
 // 上传
